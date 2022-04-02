@@ -135,11 +135,11 @@ function addDepartment() {
   }]).then((res) => {
     let sql = `INSERT INTO department (name) VALUES ("${res.name}")`
 
-    db.query(sql, (res, err) => {
+    db.query(sql, res, (err) => {
       if (err) {
         console.error(err)
       }
-      console.log(`added ${res} to the database`)
+      console.log(`added ${res.name} to the database`)
       viewAllDept();
     })
   })
@@ -185,7 +185,7 @@ function addEmployee() {
         ])
         .then(function (res) {
           let userData = [res.first_name, res.last_name, res.role, res.manager];
-          var sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)`
+          let sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)`
 
           db.query(sql, userData, (err, res) => {
             if (err)
