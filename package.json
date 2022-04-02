@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/rajveer-s/Employee-Trakker/issues"
   },
-  "homepage": "https://github.com/rajveer-s/Employee-Trakker#readme"
+  "homepage": "https://github.com/rajveer-s/Employee-Trakker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.2",
+    "mysql2": "^2.3.3"
+  }
 }
