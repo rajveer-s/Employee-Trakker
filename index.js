@@ -84,4 +84,17 @@ function promtMenu() {
   });
 }
 
+// function to view all Employees with thier manager name and salaries from a diffrent table 
+function viewAllEmp() {
 
+  let sql = `SELECT employee.id, employee.first_name AS FirstName, employee.last_name AS LastName,  role.title AS Title,  role.salary AS Salary, department.name AS Department, CONCAT(manager.first_name," ",manager.last_name) AS Manager FROM employee LEFT JOIN employee manager ON manager.id = employee.manager_id INNER JOIN role ON (role.id = employee.role_id) INNER JOIN department ON (department.id = role.department_id)`
+
+
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.error(err)
+    }
+    console.table(res);
+    promtMenu();
+  });
+}
