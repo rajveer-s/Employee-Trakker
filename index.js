@@ -67,7 +67,7 @@ function promtMenu() {
         break;
 
       case "Add Role":
-        // add role function
+        addRole();// add role function
         break;
 
       case "View All Departments":
@@ -172,14 +172,14 @@ function addEmployee() {
           {
             type: "list",
             name: "role",
-            message: "Type in your role id ?",
+            message: "Select employees role ?",
             choices: roles,
 
           },
           {
             type: "list",
             name: "manager",
-            message: "type in your managers id ?",
+            message: "Select employees managers ?",
             choices: managers,
           },
         ])
@@ -196,4 +196,42 @@ function addEmployee() {
         });
     });
   });
+}
+
+// this function creates a now role 
+function addRole() {
+
+  const dept = `SELECT department.id, department.name FROM department`;
+  db.query(dept, (error, req) => {
+    if (error) console.error(error);
+    const deptArr = req.map(({ id, name }) => ({ name: name, value: id }));
+
+
+    inquirer.prompt([{
+      name: "title",
+      message: "What role would you like to add ?"
+    },
+    {
+      name: "salary",
+      message: "how much is the salary for this role ?",
+    },
+    {
+      type: "list",
+      name: "dept",
+      message: "What dept is it gonna be in ?",
+      choices: deptArr,
+
+    }]).then((res) => {
+      let userData = [res.title, res.salary, res.dept];
+      let sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`
+
+      db.query(sql, userData, (err) => {
+        if (err) {
+          console.error(err)
+        }
+        console.log(`added Role to the database`)
+        viewAllRoles();
+      })
+    })
+  })
 }
