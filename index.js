@@ -145,17 +145,17 @@ function addDepartment() {
   })
 }
 
-// this function allows you to add employye to the database 
+// this function allows you to add employee to the database 
 function addEmployee() {
 
   const roleArr = `SELECT role.id, role.title FROM role`;
-  db.query(roleArr, (error, req) => {
-    if (error) console.error(error);
+  db.query(roleArr, (err, req) => {
+    if (err) console.error(err);
     const roles = req.map(({ id, title }) => ({ name: title, value: id }));
 
     const managerArr = `SELECT * FROM employee`;
-    db.query(managerArr, (error, req) => {
-      if (error) console.error(error);
+    db.query(managerArr, (err, req) => {
+      if (err) console.error(err);
       const managers = req.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
 
 
@@ -190,7 +190,7 @@ function addEmployee() {
           db.query(sql, userData, (err, res) => {
             if (err)
               console.error(err);
-            console.log("IT FUNCKEN SUCKS but works!");
+            console.log("Employee successfully added!");
             viewAllEmp();
           });
         });
