@@ -112,3 +112,16 @@ function viewAllDept() {
     promtMenu();
   });
 }
+
+// this function allow you to view all the employees roles 
+function viewAllRoles() {
+  let sql = `SELECT * FROM role`
+
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.error(err)
+    }
+    console.table(res)
+    promtMenu();
+  });
+}
