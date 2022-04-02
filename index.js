@@ -55,11 +55,11 @@ function promtMenu() {
         viewAllEmp()  //view all employees function 
         break;
       case "Add Employee":
-        addEmployee() // run Add employee function
+        addEmployee() // Add employee function
         break;
 
       case "Update Employee Role":
-        //run update employee role function 
+        // update employee role function 
         break;
 
       case "View All Roles":
@@ -79,7 +79,9 @@ function promtMenu() {
         break;
 
       default:
-        process.exit();
+        process.exit(); // exit function 
     }
   });
 }
+
+
