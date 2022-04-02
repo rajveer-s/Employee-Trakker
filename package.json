@@ -1,0 +1,20 @@
+{
+  "name": "employee-trakker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajveer-s/Employee-Trakker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rajveer-s/Employee-Trakker/issues"
+  },
+  "homepage": "https://github.com/rajveer-s/Employee-Trakker#readme"
+}
