@@ -113,7 +113,7 @@ function viewAllDept() {
   });
 }
 
-// this function allow you to view all the employees roles 
+// this function allows you to view all the employees roles 
 function viewAllRoles() {
   let sql = `SELECT * FROM role`
 
@@ -124,4 +124,23 @@ function viewAllRoles() {
     console.table(res)
     promtMenu();
   });
+}
+
+// this function allows you to add a new department to the table  
+function addDepartment() {
+
+  inquirer.prompt([{
+    name: "name",
+    message: "What department would you like to add ?"
+  }]).then((res) => {
+    let sql = `INSERT INTO department (name) VALUES ("${res.name}")`
+
+    db.query(sql, (res, err) => {
+      if (err) {
+        console.error(err)
+      }
+      console.log(`added ${res} to the database`)
+      viewAllDept();
+    })
+  })
 }
