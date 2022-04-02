@@ -213,12 +213,12 @@ function addRole() {
     },
     {
       name: "salary",
-      message: "how much is the salary for this role ?",
+      message: "How much is the salary for this role ?",
     },
     {
       type: "list",
       name: "dept",
-      message: "What dept is it gonna be in ?",
+      message: "What department will this role be in ?",
       choices: deptArr,
 
     }]).then((res) => {
