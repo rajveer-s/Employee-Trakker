@@ -144,3 +144,56 @@ function addDepartment() {
     })
   })
 }
+
+// this function allows you to add employye to the database 
+function addEmployee() {
+
+  const roleArr = `SELECT role.id, role.title FROM role`;
+  db.query(roleArr, (error, req) => {
+    if (error) console.error(error);
+    const roles = req.map(({ id, title }) => ({ name: title, value: id }));
+
+    const managerArr = `SELECT * FROM employee`;
+    db.query(managerArr, (error, req) => {
+      if (error) console.error(error);
+      const managers = req.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+
+
+      inquirer
+        .prompt([
+          {
+            name: "first_name",
+            message: "What is Employees first name ?",
+          },
+          {
+            name: "last_name",
+            message: "What is Employees last name ?",
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "Type in your role id ?",
+            choices: roles,
+
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "type in your managers id ?",
+            choices: managers,
+          },
+        ])
+        .then(function (res) {
+          let userData = [res.first_name, res.last_name, res.role, res.manager];
+          var sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)`
+
+          db.query(sql, userData, (err, res) => {
+            if (err)
+              console.error(err);
+            console.log("IT FUNCKEN SUCKS but works!");
+            viewAllEmp();
+          });
+        });
+    });
+  });
+}
