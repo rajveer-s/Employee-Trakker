@@ -98,3 +98,17 @@ function viewAllEmp() {
     promtMenu();
   });
 }
+
+// this function allows you to see all the departments with its id and name 
+function viewAllDept() {
+
+  let sql = `SELECT * FROM department`
+
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.error(err)
+    }
+    console.table(res)
+    promtMenu();
+  });
+}
