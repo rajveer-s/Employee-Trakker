@@ -254,18 +254,18 @@ function updatEmp() {
           {
             type: "list",
             name: "update",
-            message: "Which employee's role would you like to update?",
+            message: "Which employees role would you like to update?",
             choices: empList
           },
           {
             type: "list",
             name: "resRole",
-            message: "What role do you want to reassign for the selected employee?",
+            message: "What new Role would you like to assign for this employee?",
             choices: roleList
           }
         ])
         .then(res => {
-          let userData = [res.update, res.roleList];
+          let userData = [res.update, res.resRole];
           let sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
           db.query(sql, userData, (err, res) => {
 
