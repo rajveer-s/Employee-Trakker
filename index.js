@@ -1,5 +1,4 @@
 // Import and require all the packages
-const fs = require('fs');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require("console.table");
@@ -52,18 +51,18 @@ function promtMenu() {
   ]).then(answers => {
     switch (answers.menu) {
       case "View All Employees":
-        viewAllEmp()  //view all employees function 
+        viewAllEmp();  //view all employees function 
         break;
       case "Add Employee":
-        addEmployee() // Add employee function
+        addEmployee(); // Add employee function
         break;
 
       case "Update Employee Role":
-        // update employee role function 
+        updatEmp();// update employee role function 
         break;
 
       case "View All Roles":
-        viewAllRoles() // view all roles function
+        viewAllRoles(); // view all roles function
         break;
 
       case "Add Role":
@@ -148,15 +147,15 @@ function addDepartment() {
 // this function allows you to add employee to the database 
 function addEmployee() {
 
-  const roleArr = `SELECT role.id, role.title FROM role`;
+  let roleArr = `SELECT role.id, role.title FROM role`;
   db.query(roleArr, (err, req) => {
     if (err) console.error(err);
-    const roles = req.map(({ id, title }) => ({ name: title, value: id }));
+    let roles = req.map(({ id, title }) => ({ name: title, value: id }));
 
-    const managerArr = `SELECT * FROM employee`;
+    let managerArr = `SELECT * FROM employee`;
     db.query(managerArr, (err, req) => {
       if (err) console.error(err);
-      const managers = req.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+      let managers = req.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
 
 
       inquirer
@@ -201,10 +200,10 @@ function addEmployee() {
 // this function creates a now role 
 function addRole() {
 
-  const dept = `SELECT department.id, department.name FROM department`;
+  let dept = `SELECT department.id, department.name FROM department`;
   db.query(dept, (error, req) => {
     if (error) console.error(error);
-    const deptArr = req.map(({ id, name }) => ({ name: name, value: id }));
+    let deptArr = req.map(({ id, name }) => ({ name: name, value: id }));
 
 
     inquirer.prompt([{
@@ -232,6 +231,52 @@ function addRole() {
         console.log(`added Role to the database`)
         viewAllRoles();
       })
+    })
+  })
+}
+
+// this function allows you to update existing employees role in the database 
+function updatEmp() {
+
+  let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id"
+      FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id`;
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    let empList = res.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }))
+
+    let roles = `SELECT role.id, role.title FROM role`;
+    db.query(roles, (error, res) => {
+      if (error) console.error(error);
+      let roleList = res.map(({ id, title }) => ({ name: title, value: id }));
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "update",
+            message: "Which employee's role would you like to update?",
+            choices: empList
+          },
+          {
+            type: "list",
+            name: "resRole",
+            message: "What role do you want to reassign for the selected employee?",
+            choices: roleList
+          }
+        ])
+        .then(res => {
+          let userData = [res.update, res.roleList];
+          let sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
+          db.query(sql, userData, (err, res) => {
+
+            if (err) {
+              console.log(err)
+              return;
+            }
+            console.log(`updated employees role`)
+            promtMenu();
+          });
+        })
     })
   })
 }
