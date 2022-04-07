@@ -14,7 +14,6 @@
   - [Installation](#installation)
   - [Usage](#usage)
   - [Links](#links)
-  - [Video](#video)
   - [User Story](#user-story)
   - [Acceptance Criteria](#acceptance-criteria)
 
@@ -46,9 +45,6 @@ node index.js
 - [Video Link](https://www.awesomescreenshot.com/video/8204777?key=4e70a0d69757ffbda3b2098a7d1649cb)
 
 ---
-
-## Video: 
-
 
 ## User Story:
 ```md
