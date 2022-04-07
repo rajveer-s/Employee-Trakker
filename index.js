@@ -240,41 +240,43 @@ function updatEmp() {
 
   let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id"
       FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id`;
-  db.query(sql, (err, res) => {
+  db.query(sql, (err, result) => {
     if (err) throw err;
-    let empList = res.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }))
+    const empArr = result.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }))
 
-    let roles = `SELECT role.id, role.title FROM role`;
-    db.query(roles, (error, res) => {
+    const roleArr = `SELECT role.id, role.title FROM role`;
+    db.query(roleArr, (error, req) => {
       if (error) console.error(error);
-      let roleList = res.map(({ id, title }) => ({ name: title, value: id }));
-
+      const roles = req.map(({ id, title }) => ({ name: title, value: id }));
       inquirer
         .prompt([
           {
             type: "list",
-            name: "update",
+            name: "pickEmployee",
             message: "Which employees role would you like to update?",
-            choices: empList
+            choices: empArr
           },
           {
             type: "list",
-            name: "resRole",
+            name: "newRole",
             message: "What new Role would you like to assign for this employee?",
-            choices: roleList
+            choices: roles
           }
         ])
-        .then(res => {
-          let userData = [res.update, res.resRole];
-          let sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
-          db.query(sql, userData, (err, res) => {
+        .then(response => {
+          const sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
+          const userData = [
+            response.newRole,
+            response.pickEmployee
+          ];
 
+          db.query(sql, userData, (err, res) => {
             if (err) {
               console.log(err)
               return;
             }
-            console.log(`updated employees role`)
-            promtMenu();
+            console.info(`updated employee in the database`)
+            viewAllEmp();
           });
         })
     })
